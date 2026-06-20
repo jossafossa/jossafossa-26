@@ -1,0 +1,7 @@
+// The picture>img object-fit/fill reset lives in the global reset; parents set the ratio.
+.picture {
+  display: block;
+  overflow: hidden;
+  width: 100%;
+  height: 100%;
+}

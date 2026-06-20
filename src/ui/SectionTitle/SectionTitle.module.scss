@@ -1,0 +1,58 @@
+@use '@styles/breakpoints' as *;
+
+.title {
+  font-family: Montserrat, sans-serif;
+  text-transform: uppercase;
+  font-weight: 500;
+  position: relative;
+  font-size: 2em;
+}
+
+.underlineLeft,
+.underlineRight {
+  margin-bottom: 1rem;
+  padding-bottom: 1.5rem;
+}
+
+.underlineLeft::after,
+.underlineRight::after {
+  content: '';
+  background: var(--primary-color-fancy);
+  width: 100vw;
+  height: 0.5rem;
+  bottom: 0;
+  position: absolute;
+}
+
+.underlineLeft::after {
+  transform: translateX(-100%) translateY(-100%);
+}
+
+.underlineRight::after {
+  left: 0;
+  transform: translateY(-100%);
+}
+
+// Floating banner used on the dark timeline sections.
+.banner {
+  left: 0;
+  right: 0;
+  margin: auto;
+  transform: translateY(-100%);
+  background: var(--bg-light-fancy);
+  color: #fff;
+  padding: 1rem;
+  font-size: 3em;
+  width: 40rem;
+  text-align: center;
+  position: absolute;
+  border-radius: 1rem;
+  overflow: hidden;
+}
+
+@include mq-max(720px) {
+  .banner {
+    font-size: 2em;
+    width: 100%;
+  }
+}

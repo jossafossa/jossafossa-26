@@ -1,0 +1,16 @@
+// Compile-time helpers only — emits no CSS on its own.
+@use 'sass:color';
+
+// Build a display-p3 color from an sRGB color (wider gamut where supported).
+@function p3($source) {
+  $r: color.channel($source, 'red', $space: rgb);
+  $g: color.channel($source, 'green', $space: rgb);
+  $b: color.channel($source, 'blue', $space: rgb);
+  @return color(display-p3 calc($r / 255) calc($g / 255) calc($b / 255));
+}
+
+// Emit a property twice: sRGB fallback first, then the display-p3 enhancement.
+@mixin p3($property, $source) {
+  #{$property}: $source;
+  #{$property}: p3($source);
+}

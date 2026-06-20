@@ -1,0 +1,23 @@
+node_modules
+dist
+dist-ssr
+coverage
+*.local
+.DS_Store
+.vscode/*
+!.vscode/settings.json
+!.vscode/extensions.json
+*.tsbuildinfo
+
+# Agent skills live in user folder (~/.agents)
+.agents
+
+# Planning docs, local only
+tasks
+
+# Build-plan docs, local only
+DESIGN.md
+KICKOFF.md
+
+# Skills live in user folder
+skills-lock.json

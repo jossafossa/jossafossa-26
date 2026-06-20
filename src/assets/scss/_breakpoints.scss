@@ -1,0 +1,12 @@
+// Compile-time media-query helpers only — emits no CSS on its own.
+@mixin mq-min($px) {
+  @media screen and (min-width: $px) {
+    @content;
+  }
+}
+
+@mixin mq-max($px) {
+  @media screen and (max-width: $px) {
+    @content;
+  }
+}

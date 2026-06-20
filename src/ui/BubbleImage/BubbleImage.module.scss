@@ -1,0 +1,42 @@
+// Imperative effect; refactor to an idiomatic React hook later.
+.bubbleImage {
+  position: relative;
+  overflow: hidden;
+  -webkit-user-drag: none;
+  pointer-events: none;
+  user-select: none;
+  width: 100%;
+  height: 100%;
+
+  .inner {
+    --x: 0;
+    --y: 0;
+    --size: 30px;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    position: absolute;
+    transition: 0s ease;
+    clip-path: circle(var(--size) at var(--x) var(--y));
+    animation: animateIn 0.5s forwards;
+    transform-origin: var(--x) var(--y);
+
+    &.isActive {
+      --size: 50%;
+      --x: 50%;
+      --y: 50%;
+      transition: 2s ease;
+    }
+  }
+}
+
+@keyframes animateIn {
+  from {
+    scale: 0;
+  }
+  to {
+    scale: 1;
+  }
+}

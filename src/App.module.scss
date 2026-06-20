@@ -1,0 +1,20 @@
+.app {
+  overflow-x: hidden;
+}
+
+.footer {
+  background: var(--bg-dark-fancy);
+  color: #fff;
+  padding: 1rem;
+
+  p {
+    margin: 0;
+  }
+}
+
+.loading {
+  min-height: 100dvh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}

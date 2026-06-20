@@ -1,0 +1,54 @@
+// Imperative effect; refactor to an idiomatic React hook later.
+// No `transition` here: stripe.ts sets transition-duration on .effect at runtime.
+.button {
+  --border: 3px;
+  --padding: 16px;
+  --height: 48px;
+  --background: var(--primary-color-fancy);
+  --color: white;
+  --background-active: var(--bg-dark-fancy);
+  --color-active: var(--primary-color-2);
+
+  padding: 0 var(--padding);
+  height: var(--height);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--background);
+  color: var(--color);
+  position: relative;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.effect {
+  --end: var(--border);
+  --start: var(--border);
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--background-active);
+  color: var(--color-active);
+  white-space: nowrap;
+  z-index: 2;
+  pointer-events: none;
+  clip-path: polygon(
+    var(--start) var(--border),
+    var(--end) var(--border),
+    var(--end) calc(100% - var(--border)),
+    var(--start) calc(100% - var(--border))
+  );
+
+  &.animateIn {
+    --end: calc(100% - var(--border));
+  }
+
+  &.animateOut {
+    --start: calc(100% - var(--border));
+  }
+}

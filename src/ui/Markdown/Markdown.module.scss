@@ -1,0 +1,55 @@
+// Bare element selectors target the elements react-markdown emits, scoped under .markdown.
+.markdown {
+  p,
+  ul,
+  ol {
+    font-size: 1.2em;
+  }
+
+  :where(ul, ol) :is(ul, ol) {
+    font-size: 1em;
+  }
+
+  ul,
+  ol {
+    --offset: 2rem;
+    display: flex;
+    flex-direction: column;
+    padding-left: var(--offset);
+    position: relative;
+    list-style: none;
+  }
+
+  li {
+    position: relative;
+  }
+
+  li::before {
+    content: '●';
+    position: absolute;
+    left: calc(-1 * var(--offset));
+    color: var(--primary-color);
+  }
+
+  :where(ul, ol) > li:not(:nth-child(1)) {
+    margin-top: 1rem;
+  }
+
+  :where(ul, ol) :where(ul, ol) > li {
+    margin-top: 1rem;
+  }
+
+  code {
+    background: var(--bg-dark);
+    color: white;
+    padding: 0.15rem 0.5rem;
+    border-radius: 4px;
+    box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.2) inset;
+    cursor: default;
+  }
+
+  p > a,
+  li > a {
+    text-decoration: underline;
+  }
+}

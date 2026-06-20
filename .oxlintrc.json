@@ -1,0 +1,44 @@
+{
+  "$schema": "./node_modules/oxlint/configuration_schema.json",
+  "plugins": ["react", "typescript", "unicorn", "import", "jsx-a11y", "vitest"],
+  "env": { "browser": true, "es2024": true },
+  "categories": {
+    "correctness": "error",
+    "suspicious": "error",
+    "perf": "error",
+    "style": "warn",
+    "pedantic": "warn",
+    "restriction": "off",
+    "nursery": "off"
+  },
+  "rules": {
+    "no-console": "warn",
+
+    "react/react-in-jsx-scope": "off",
+
+    "import/no-unassigned-import": "off",
+    "import/no-named-export": "off",
+    "import/prefer-default-export": "off",
+    "import/no-nodejs-modules": "off",
+
+    "unicorn/filename-case": "off",
+
+    "import/group-exports": "off",
+    "import/exports-last": "off",
+
+    "vitest/require-hook": "off",
+    "vitest/prefer-importing-vitest-globals": "off",
+    "vitest/no-importing-vitest-globals": "off",
+    "vitest/require-mock-type-parameters": "off",
+
+    "jsx-a11y/click-events-have-key-events": "off",
+    "jsx-a11y/no-noninteractive-element-interactions": "off",
+    "jsx-a11y/prefer-tag-over-role": "off",
+
+    "sort-keys": "off",
+    "sort-imports": "off",
+    "capitalized-comments": "off",
+    "id-length": "off"
+  },
+  "ignorePatterns": ["dist", "node_modules", "public"]
+}

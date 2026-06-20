@@ -1,0 +1,21 @@
+@use 'mixins' as *;
+
+:root {
+  @include p3('--bg-light-1', rgb(65, 82, 93));
+  @include p3('--bg-light-2', rgb(49, 55, 80));
+  @include p3('--bg-dark-1', rgb(31, 40, 46));
+  @include p3('--bg-dark-2', rgb(16, 20, 36));
+  @include p3('--bg-dark', rgb(30, 36, 40));
+  @include p3('--primary-color-1', rgb(249, 152, 100));
+  @include p3('--primary-color-2', rgb(243, 136, 130));
+  @include p3('--primary-color-light', rgb(232, 221, 199));
+  --primary-color: var(--primary-color-2);
+
+  --bg-light-fancy: linear-gradient(90deg, var(--bg-light-1), var(--bg-light-2));
+  --primary-color-fancy: linear-gradient(
+    50deg,
+    var(--primary-color-1),
+    var(--primary-color-2)
+  );
+  --bg-dark-fancy: linear-gradient(90deg, var(--bg-dark-1), var(--bg-dark-2));
+}

@@ -1,0 +1,23 @@
+// Width = 100% / parent-cols * own-span. Reads --cols-current + --row-gap from
+// the parent <Row> (custom props inherit).
+@use '@styles/breakpoints' as *;
+
+.col {
+  --span: 1;
+  --span-current: var(--span);
+  flex: 0 0 auto;
+  padding: var(--row-gap, 16px);
+  width: calc(100% / var(--cols-current, 12) * var(--span-current));
+}
+
+@include mq-min(600px) {
+  .col {
+    --span-current: var(--span-md);
+  }
+}
+
+@include mq-min(1000px) {
+  .col {
+    --span-current: var(--span-lg);
+  }
+}

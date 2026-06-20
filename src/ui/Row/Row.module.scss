@@ -1,0 +1,31 @@
+// Columns-per-row come from inline CSS custom props; breakpoints swap which one
+// is active. Child <Col> reads --cols-current + --row-gap (both inherit down).
+@use '@styles/breakpoints' as *;
+
+.row {
+  --cols: 12;
+  --cols-current: var(--cols);
+  --row-gap: 16px;
+  display: flex;
+  flex-wrap: wrap;
+  margin: calc(-1 * var(--row-gap));
+  width: calc(100% + var(--row-gap) * 2);
+}
+
+@include mq-min(600px) {
+  .row {
+    --cols-current: var(--cols-md);
+  }
+}
+
+@include mq-min(1000px) {
+  .row {
+    --cols-current: var(--cols-lg);
+  }
+}
+
+// Make cards fill the (flex-stretched) row height.
+.stretch > * > *,
+.stretch > * > a > * {
+  height: 100%;
+}

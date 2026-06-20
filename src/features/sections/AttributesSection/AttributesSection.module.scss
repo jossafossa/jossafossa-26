@@ -1,0 +1,193 @@
+@use '@styles/breakpoints' as *;
+
+.skills {
+  margin-right: 4rem;
+}
+
+.skillTableTitle {
+  padding: 2rem 1rem;
+  width: 20rem;
+  text-transform: uppercase;
+  margin-left: 1rem;
+  background: var(--primary-color-fancy);
+  font-weight: 600;
+  color: #fff;
+  font-size: 1.2em;
+  box-shadow: inset 0 0.5rem 0 0 rgba(0, 0, 0, 0.1);
+}
+
+.skillsContainer > .skillTable:first-child .skillTableTitle {
+  box-shadow: none;
+  border-radius: 1rem 1rem 0 0;
+}
+
+.skillTableRow {
+  display: flex;
+
+  @include mq-max(720px) {
+    > .suffix {
+      display: none;
+    }
+  }
+}
+
+.skillTableContent {
+  --offset: 200px;
+  margin-left: calc(-1 * var(--offset));
+  color: #fff;
+  background: var(--bg-light-fancy);
+  border-radius: 1rem;
+
+  @include mq-max(720px) {
+    border-radius: 1rem 0 0 1rem;
+  }
+
+  > *:nth-child(1) {
+    padding-left: 0;
+  }
+
+  .skillTableRow > *:nth-child(1) {
+    padding-left: calc(var(--offset) + 2rem) !important;
+  }
+}
+
+.skillTableContent > .skillTableRow:nth-child(2n) {
+  background: hsla(0, 0%, 100%, 0.1);
+}
+
+.skillTableRow > * {
+  padding: 1rem;
+}
+
+.skillTableRow > :first-child {
+  flex: 1;
+}
+
+.skillTableRow > :nth-child(2) {
+  width: 8rem;
+  display: flex;
+  justify-content: flex-end;
+  box-shadow: inset 0 0 0 100px rgba(0, 0, 0, 0.3);
+  position: relative;
+}
+
+.skillTableRow > :nth-child(3) {
+  width: 8.5rem;
+}
+
+.skillTableRow:nth-last-child(1) {
+  border-bottom-right-radius: 1rem;
+}
+
+.skillTableContent .skillTableRow:first-child > :nth-child(2)::before,
+.skillTableContent .skillTableRow:last-child > :nth-child(2)::after {
+  content: '';
+  background: var(--bg-light-2);
+  box-shadow: inset 0 0 0 100px rgba(0, 0, 0, 0.3);
+  width: 100%;
+  height: 1rem;
+  position: absolute;
+  top: 0;
+  left: 0;
+  transform: translateY(-100%);
+  border-radius: 1rem 1rem 0 0;
+}
+
+.skillTableContent .skillTableRow:last-child {
+  border-bottom-left-radius: 1rem;
+}
+
+.skillTableContent .skillTableRow:last-child > :nth-child(2)::after {
+  bottom: 0;
+  top: auto;
+  transform: translateY(100%);
+  border-radius: 0 0 1rem 1rem;
+}
+
+// ---- qualities ----
+.qualities {
+  margin-bottom: 4rem;
+}
+
+.qualitiesRow {
+  margin-bottom: 0.5rem;
+  display: flex;
+  align-items: center;
+}
+
+.qualityIcon {
+  display: flex;
+  align-items: center;
+  padding: 1rem;
+  width: 5rem;
+  height: 5rem;
+  justify-content: center;
+  background: var(--primary-color-fancy);
+  font-size: 2em;
+  color: #fff;
+  border-radius: 1rem;
+}
+
+.qualitiesRow > :nth-child(2) {
+  background: var(--bg-light-fancy);
+  padding: 1rem;
+  color: #fff;
+  flex: 1;
+  box-shadow: inset 0.5rem 0 0 0 rgba(0, 0, 0, 0.1);
+  border-radius: 0 1rem 1rem 0;
+}
+
+// ---- interests ----
+.interestsContainer {
+  display: flex;
+  flex-wrap: wrap;
+
+  > * {
+    margin-right: 0.5rem;
+    margin-bottom: 0.5rem;
+  }
+}
+
+.marked {
+  padding: 0.5rem;
+  background: var(--primary-color-fancy);
+  color: #fff;
+  cursor: default;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  border-radius: 1rem;
+  font-weight: bold;
+
+  > svg {
+    font-size: 120%;
+  }
+
+  &:hover {
+    box-shadow: inset 0 0 0 100px hsla(0, 0%, 100%, 0.1);
+  }
+
+  @include mq-min(720px) {
+    padding: 0.75rem 1.25rem;
+
+    > svg {
+      font-size: 150%;
+    }
+  }
+}
+
+// ---- shared ----
+.small {
+  width: 25rem;
+
+  @include mq-max(1024px) {
+    width: 100%;
+  }
+}
+
+@include mq-max(1280px) {
+  .skills {
+    margin: 0;
+    margin-bottom: 4rem;
+  }
+}

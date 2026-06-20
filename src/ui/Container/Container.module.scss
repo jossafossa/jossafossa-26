@@ -1,0 +1,18 @@
+@use '@styles/breakpoints' as *;
+
+.container {
+  margin: auto;
+  max-width: 1400px;
+  width: 100%;
+  padding: 0 1rem;
+}
+
+.small {
+  max-width: 1000px;
+}
+
+@include mq-max(720px) {
+  .noPadding {
+    padding: 0;
+  }
+}

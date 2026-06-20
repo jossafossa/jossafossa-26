@@ -1,0 +1,22 @@
+.bulgeContainer {
+  --bulge-size: 500px;
+  position: relative;
+  overflow: hidden;
+}
+
+.bulge {
+  width: var(--bulge-size);
+  height: var(--bulge-size);
+  position: absolute;
+  pointer-events: none;
+  left: calc(var(--bulge-size) * -0.5);
+  top: calc(var(--bulge-size) * -0.5);
+  opacity: 0;
+  border-radius: 50%;
+  background-image: radial-gradient(var(--primary-color-light) 0%, rgba(255, 255, 255, 0) 50%);
+  transition: opacity 1s ease;
+}
+
+.isActive {
+  opacity: 0.1;
+}
