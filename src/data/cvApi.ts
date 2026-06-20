@@ -1,36 +1,35 @@
-import { createApi, fakeBaseQuery } from '@reduxjs/toolkit/query/react';
-import type {
-  Profile,
-  ContentSection,
-  TimelineGroup,
-  Project,
-  SkillsBlock,
-  NamedIconList,
-} from '@/data/cv.types';
-import { cv } from '@/data/cv.hardcoded';
+import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
+import type { Profile, Project } from '@/data/cv.types';
+import type { HomeSection } from '@/data/home.types';
+import {
+  CMS_URL,
+  toProfile,
+  toProjects,
+  toHomeSections,
+  type RawHomepage,
+} from '@/data/strapi';
+
+type StrapiResponse<T> = { data: T };
 
 export const cvApi = createApi({
   reducerPath: 'cvApi',
-  baseQuery: fakeBaseQuery(),
+  baseQuery: fetchBaseQuery({ baseUrl: `${CMS_URL}/api` }),
   endpoints: (build) => ({
-    getProfile: build.query<Profile, void>({ queryFn: () => ({ data: cv.profile }) }),
-    getAbout: build.query<ContentSection[], void>({ queryFn: () => ({ data: cv.about }) }),
-    getWorkExperience: build.query<TimelineGroup, void>({ queryFn: () => ({ data: cv.workExperience }) }),
-    getEducation: build.query<TimelineGroup, void>({ queryFn: () => ({ data: cv.education }) }),
-    getProjects: build.query<Project[], void>({ queryFn: () => ({ data: cv.projects }) }),
-    getSkills: build.query<SkillsBlock, void>({ queryFn: () => ({ data: cv.skills }) }),
-    getQualities: build.query<NamedIconList, void>({ queryFn: () => ({ data: cv.qualities }) }),
-    getInterests: build.query<NamedIconList, void>({ queryFn: () => ({ data: cv.interests }) }),
+    getHomepage: build.query<HomeSection[], void>({
+      query: () => 'homepage',
+      transformResponse: (res: StrapiResponse<RawHomepage>) => toHomeSections(res.data),
+    }),
+    getProfile: build.query<Profile, void>({
+      query: () => 'profile',
+      transformResponse: (res: StrapiResponse<Parameters<typeof toProfile>[0]>) =>
+        toProfile(res.data),
+    }),
+    getProjects: build.query<Project[], void>({
+      query: () => 'projects?pagination[pageSize]=100&sort=order:asc',
+      transformResponse: (res: StrapiResponse<Parameters<typeof toProjects>[0]>) =>
+        toProjects(res.data),
+    }),
   }),
 });
 
-export const {
-  useGetProfileQuery,
-  useGetAboutQuery,
-  useGetWorkExperienceQuery,
-  useGetEducationQuery,
-  useGetProjectsQuery,
-  useGetSkillsQuery,
-  useGetQualitiesQuery,
-  useGetInterestsQuery,
-} = cvApi;
+export const { useGetHomepageQuery, useGetProfileQuery, useGetProjectsQuery } = cvApi;

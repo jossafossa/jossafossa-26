@@ -14,6 +14,8 @@ import styles from './ProjectsSection.module.scss';
 
 export type ProjectsSectionProps = {
   projects: Project[];
+  title?: string;
+  showHidden?: boolean;
 };
 
 const ALL = 'all';
@@ -42,17 +44,17 @@ function FilterPill({ label, accent, active, onClick }: FilterPillProps) {
   );
 }
 
-export function ProjectsSection({ projects }: ProjectsSectionProps) {
-  // hidden projects are only shown when the URL has ?extended (read once)
-  const showHidden = useMemo(
-    () => new URLSearchParams(window.location.search).has('extended'),
-    [],
+export function ProjectsSection({ projects, title = 'Projecten', showHidden = false }: ProjectsSectionProps) {
+  // hidden projects show when the CMS block opts in, or the URL has ?extended (read once)
+  const extended = useMemo(
+    () => showHidden || new URLSearchParams(window.location.search).has('extended'),
+    [showHidden],
   );
   // shuffle once — stable across re-renders
   const shuffled = useMemo(() => shuffle(projects), [projects]);
   const visible = useMemo(
-    () => shuffled.filter((p) => !p.hidden || showHidden),
-    [shuffled, showHidden],
+    () => shuffled.filter((p) => !p.hidden || extended),
+    [shuffled, extended],
   );
 
   const filters = useMemo(() => {
@@ -75,7 +77,7 @@ export function ProjectsSection({ projects }: ProjectsSectionProps) {
     <Section variant="dark" id="projecten">
       <Container>
         <div className={styles.inner}>
-          <SectionTitle underline="left">Projecten</SectionTitle>
+          <SectionTitle underline="left">{title}</SectionTitle>
 
           <div className={styles.filters}>
             <strong>Filter op: </strong>

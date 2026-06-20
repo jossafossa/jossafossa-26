@@ -22,4 +22,14 @@ describe('getSources', () => {
   it('strips the original extension before building paths', () => {
     expect(getSources('foo.png').fallback).toBe('/img/foo-200x200.webp');
   });
+
+  it('passes absolute (Strapi) URLs through untouched', () => {
+    const url = 'http://localhost:1337/uploads/gea_fairplay_abc.webp';
+    expect(getSources(url)).toEqual({ sources: [], fallback: url });
+  });
+
+  it('passes site-relative /uploads paths through untouched', () => {
+    const path = '/uploads/photo_123.jpg';
+    expect(getSources(path)).toEqual({ sources: [], fallback: path });
+  });
 });

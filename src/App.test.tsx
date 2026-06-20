@@ -2,14 +2,9 @@ import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { render } from '@testing-library/react';
 
 vi.mock('@/data/cvApi', () => ({
+  useGetHomepageQuery: vi.fn(),
   useGetProfileQuery: vi.fn(),
-  useGetAboutQuery: vi.fn(),
-  useGetWorkExperienceQuery: vi.fn(),
-  useGetEducationQuery: vi.fn(),
   useGetProjectsQuery: vi.fn(),
-  useGetSkillsQuery: vi.fn(),
-  useGetQualitiesQuery: vi.fn(),
-  useGetInterestsQuery: vi.fn(),
 }));
 
 vi.mock('@/ui/Container', () => ({ Container: ({ children }: any) => <div>{children}</div> }));
@@ -25,33 +20,35 @@ vi.mock('@/features/sections/TimelineSection', () => ({
 vi.mock('@/features/sections/ProjectsSection', () => ({
   ProjectsSection: ({ projects }: any) => <div data-testid="projects">{projects.length}</div>,
 }));
-vi.mock('@/features/sections/AttributesSection', () => ({
-  AttributesSection: ({ skills }: any) => <div data-testid="attributes">{skills.title}</div>,
+vi.mock('@/features/sections/SkillsSection', () => ({
+  SkillsSection: ({ title }: any) => <div data-testid="skills">{title}</div>,
+}));
+vi.mock('@/features/sections/IconListSection', () => ({
+  IconListSection: ({ title }: any) => <div data-testid="iconList">{title}</div>,
 }));
 
 import App from './App';
 import * as api from '@/data/cvApi';
+import type { HomeSection } from '@/data/home.types';
 
-const data = {
-  profile: { name: 'Joost Hobma', footer: { label: 'Made with React' } },
-  about: [{ id: 'over-mij' }, { id: 'dit-vind-ik-belangrijk' }],
-  workExperience: { id: 'werkervaring' },
-  education: { id: 'opleidingen' },
-  projects: [{ id: 'a' }, { id: 'b' }],
-  skills: { title: 'Skills' },
-  qualities: { title: 'Qualities' },
-  interests: { title: 'Interests' },
-};
+const sections: HomeSection[] = [
+  { kind: 'about', id: 'over-mij', title: 'Over mij', body: '' },
+  { kind: 'about', id: 'dit-vind-ik-belangrijk', title: 'Belangrijk', body: '' },
+  { kind: 'timeline', id: 'werkervaring', title: 'Werkervaring', items: [] },
+  { kind: 'timeline', id: 'opleidingen', title: 'Opleidingen', items: [] },
+  { kind: 'projects', id: 'projecten', title: 'Projecten', showHidden: false },
+  { kind: 'skills', id: 'skills', title: 'Skills', groups: [] },
+  { kind: 'iconList', id: 'kwaliteiten', title: 'Kwaliteiten', items: [] },
+  { kind: 'iconList', id: 'interesses', title: 'Interesses', items: [] },
+];
+
+const profile = { name: 'Joost Hobma', footer: { label: 'Made with React' } };
+const projects = [{ id: 'a' }, { id: 'b' }];
 
 function mockAll(overrides: Record<string, unknown> = {}) {
-  vi.mocked(api.useGetProfileQuery).mockReturnValue({ data: data.profile } as any);
-  vi.mocked(api.useGetAboutQuery).mockReturnValue({ data: data.about } as any);
-  vi.mocked(api.useGetWorkExperienceQuery).mockReturnValue({ data: data.workExperience } as any);
-  vi.mocked(api.useGetEducationQuery).mockReturnValue({ data: data.education } as any);
-  vi.mocked(api.useGetProjectsQuery).mockReturnValue({ data: data.projects } as any);
-  vi.mocked(api.useGetSkillsQuery).mockReturnValue({ data: data.skills } as any);
-  vi.mocked(api.useGetQualitiesQuery).mockReturnValue({ data: data.qualities } as any);
-  vi.mocked(api.useGetInterestsQuery).mockReturnValue({ data: data.interests } as any);
+  vi.mocked(api.useGetHomepageQuery).mockReturnValue({ data: sections } as any);
+  vi.mocked(api.useGetProfileQuery).mockReturnValue({ data: profile } as any);
+  vi.mocked(api.useGetProjectsQuery).mockReturnValue({ data: projects } as any);
   for (const [key, value] of Object.entries(overrides)) {
     vi.mocked((api as any)[key]).mockReturnValue(value as any);
   }
@@ -61,7 +58,7 @@ describe('App', () => {
   beforeEach(() => mockAll());
 
   it('shows a loading fallback while a required query has no data', () => {
-    mockAll({ useGetProjectsQuery: { data: undefined } });
+    mockAll({ useGetHomepageQuery: { data: undefined } });
     const { getByText, queryByTestId } = render(<App />);
     expect(getByText('Laden…')).toBeInTheDocument();
     expect(queryByTestId('header')).not.toBeInTheDocument();
@@ -72,23 +69,22 @@ describe('App', () => {
     expect(getByTestId('header')).toHaveTextContent('Joost Hobma');
   });
 
-  it('renders two About sections from the about data', () => {
+  it('renders an About section per about block', () => {
     const { getAllByTestId } = render(<App />);
     const abouts = getAllByTestId('about');
     expect(abouts).toHaveLength(2);
     expect(abouts[0]).toHaveTextContent('over-mij');
   });
 
-  it('renders work and education timelines with the right groups', () => {
+  it('renders timelines with the right groups', () => {
     const { getAllByTestId } = render(<App />);
     const timelines = getAllByTestId('timeline');
     expect(timelines.map((t) => t.textContent)).toEqual(['werkervaring', 'opleidingen']);
   });
 
-  it('passes the projects and skills to their sections', () => {
+  it('passes the projects to the projects section', () => {
     const { getByTestId } = render(<App />);
     expect(getByTestId('projects')).toHaveTextContent('2');
-    expect(getByTestId('attributes')).toHaveTextContent('Skills');
   });
 
   it('renders the footer label', () => {
@@ -96,7 +92,7 @@ describe('App', () => {
     expect(getByText('Made with React')).toBeInTheDocument();
   });
 
-  it('composes the sections in the documented order', () => {
+  it('renders sections in the order supplied by the CMS', () => {
     const { container } = render(<App />);
     const order = [...container.querySelectorAll('[data-testid]')].map((el) =>
       el.getAttribute('data-testid'),
@@ -108,7 +104,9 @@ describe('App', () => {
       'timeline',
       'timeline',
       'projects',
-      'attributes',
+      'skills',
+      'iconList',
+      'iconList',
     ]);
   });
 });

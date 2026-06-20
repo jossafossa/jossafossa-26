@@ -21,3 +21,6 @@ KICKOFF.md
 
 # Skills live in user folder
 skills-lock.json
+
+# local env
+.env
