@@ -3,8 +3,10 @@
 # --- build the static SPA ---
 FROM node:22-slim AS build
 WORKDIR /app
-RUN corepack enable
 COPY package.json pnpm-lock.yaml ./
+# pin pnpm to the version that generated the lockfile (avoids newer pnpm's
+# minimumReleaseAge default rejecting freshly-published packages)
+RUN corepack enable && corepack prepare pnpm@10.15.1 --activate
 RUN pnpm install --frozen-lockfile
 COPY . .
 # CMS base URL is baked in at build time (Vite inlines VITE_* vars)
